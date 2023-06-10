@@ -13,6 +13,7 @@ class SongSerializer(serializers.ModelSerializer):
 
     def get_logo(self, instance):
         album = instance.album
+        print(repr(album.logo))
         if album is not None:
             return 'http://localhost:8000/media/' + str(album.logo)
         return None

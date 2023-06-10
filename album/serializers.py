@@ -4,34 +4,38 @@ from .models2 import Playlist
 
 
 class AlbumSerializer(serializers.ModelSerializer):
-    # artistn = serializers.SerializerMethodField()
-    # songsinfo = serializers.SerializerMethodField()
+    artistn = serializers.SerializerMethodField()
+    songsinfo = serializers.SerializerMethodField()
 
     class Meta:
         model = Album
         fields = '__all__'
 
-    # def get_artistn(self, instance):
-    #     list1 = []
+    def get_artistn(self, instance):
+        list1 = []
 
-    #     for i in instance.artists.all():
-    #         list1.append(str(i.title))
+        for i in instance.artists.all():
+            list1.append(str(i.title))
 
-    #     return list1
+        return list1
 
-    # def get_songsinfo(self, instance):
-    #     songs = instance.songs.all()
-    #     songs_list = []
-    #     if songs is not None:
-    #         for song in songs:
-    #             songs_list.append({"title": song.title, "id": song.id, "artist": song.artist, "liked": song.liked,
-    #                               "length": song.length, "album": {"id": song.album.id, "title": song.album.title}})
-    #     return songs_list
+    def get_songsinfo(self, instance):
+        songs = instance.songs.all()
+        MEDIA_DIR = 'http://localhost:8000/media/'
+        songs_list = []
+        if songs is not None:
+            for song in songs:
+                artist = song.artist
+                artistdetails = {"id": artist.id, "title": artist.title}
+                det =  {"id": artistdetails["id"], "title": artistdetails["title"]}
+                songs_list.append({"title": song.title, "id": song.id, "liked": song.liked, "artistdetails": det, "file": MEDIA_DIR + str(song.file), "logo": MEDIA_DIR + str(song.album.logo),
+                                  "length": song.length, "album": {"id": song.album.id, "title": song.album.title}})
+        return songs_list
 
 
 class PlaylistSerializer(serializers.ModelSerializer):
     artistn = serializers.SerializerMethodField()
-    # songsinfo = serializers.SerializerMethodField()
+    songsinfo = serializers.SerializerMethodField()
 
     class Meta:
         model = Playlist
@@ -44,12 +48,15 @@ class PlaylistSerializer(serializers.ModelSerializer):
             list1.append(str(i.title))
         return list1
 
-    # def get_songsinfo(self, instance):
-    #     songs = instance.songs.all()
-    #     songs_list = []
-    #     if songs is not None:
-    #         for song in songs:
-    #             artistdetails = song.artistdetails
-    #             songs_list.append({"title": song.title, "id": song.id, "artist": song.artist, "liked": song.liked, "artistdetails": artistdetails,
-    #                               "length": song.length, "album": {"id": song.album.id, "title": song.album.title}})
-    #     return songs_list
+    def get_songsinfo(self, instance):
+        songs = instance.songs.all()
+        MEDIA_DIR = 'http://localhost:8000/media/'
+        songs_list = []
+        if songs is not None:
+            for song in songs:
+                artist = song.artist
+                artistdetails = {"id": artist.id, "title": artist.title}
+                det =  {"id": artistdetails["id"], "title": artistdetails["title"]}
+                songs_list.append({"title": song.title, "id": song.id, "liked": song.liked, "artistdetails": det, "file": MEDIA_DIR + str(song.file), "logo": MEDIA_DIR + str(song.album.logo),
+                                  "length": song.length, "album": {"id": song.album.id, "title": song.album.title}})
+        return songs_list
