@@ -5,10 +5,12 @@ from .models import MyUser
 
 
 class UserSerializer(serializers.ModelSerializer):
+    playlists = serializers.SerializerMethodField()
+
     class Meta:
         model = MyUser
-        fields = ('id', 'username', 'email', 'created', 'races_completed', 'average_speed', 'races_won', 
-                  'best_speed')
+        fields = ('id', 'username', 'email', 'created', 'liked')
+
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
@@ -31,5 +33,5 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ('id', 'username', 'email', 'created', 'races_completed', 'average_speed', 'races_won', 'best_speed')
+        fields = ('id', 'username', 'email', 'created', 'liked')
 

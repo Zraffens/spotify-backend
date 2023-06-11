@@ -36,7 +36,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(_('email address'), unique=True)
     created = models.DateTimeField(auto_now_add=True)
-    favorites = models.ManyToManyField(Song)
+    liked = models.ManyToManyField(Song)
     is_staff = models.BooleanField(blank=True, default=False)
     is_active = models.BooleanField(default=False)
 
@@ -46,3 +46,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return self.username
+    
+    @property
+    def get_playlists(self):
+        return self.playlists if self.playlists.exists() else None
