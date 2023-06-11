@@ -26,7 +26,7 @@ SECRET_KEY = 'n80lyfzj49aw_8ul=g-uuyxm6awr+p5(@q$)@b!4^qo)^fyro7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['198.211.99.20', 'localhost', '127.0.0.1', 'desktop-4s2i8gk']
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # post-installed apps
     'rest_framework',
     'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
     'myuser.apps.MyuserConfig',
     'song.apps.SongConfig',
     'album.apps.AlbumConfig',
@@ -55,9 +56,11 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    # 'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'spotify.urls'
@@ -166,7 +169,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-CORS_ALLOWED_ORIGINS  = ['http://localhost:8000', 'http://localhost:8080']
+CORS_ALLOWED_ORIGINS = ['http://localhost:8000', 'http://localhost:8080']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -178,11 +181,9 @@ MEDIA_ROOT = '/media/'
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
-AUTH_USER_MODEL = 'myuser.MyUser'   
+AUTH_USER_MODEL = 'myuser.MyUser'

@@ -4,8 +4,11 @@ from song.models import Song
 from .serializers import AlbumSerializer, PlaylistSerializer
 from rest_framework import mixins
 from rest_framework import generics
-import json
-from django.http import HttpResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
 from song.serializers import SongSerializer
 
 
@@ -15,9 +18,9 @@ class AlbumList(generics.ListCreateAPIView):
 
 
 class AlbumDetail(mixins.RetrieveModelMixin,
-                mixins.UpdateModelMixin,
-                mixins.DestroyModelMixin,
-                generics.GenericAPIView):
+                  mixins.UpdateModelMixin,
+                  mixins.DestroyModelMixin,
+                  generics.GenericAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
 
@@ -37,9 +40,9 @@ class PlaylistList(generics.ListCreateAPIView):
 
 
 class PlaylistDetail(mixins.RetrieveModelMixin,
-                mixins.UpdateModelMixin,
-                mixins.DestroyModelMixin,
-                generics.GenericAPIView):
+                     mixins.UpdateModelMixin,
+                     mixins.DestroyModelMixin,
+                     generics.GenericAPIView):
     queryset = Playlist.objects.all()
     serializer_class = PlaylistSerializer
 
@@ -69,10 +72,19 @@ class AlbumSearchList(generics.ListAPIView):
     serializer_class = AlbumSerializer
 
     def get_queryset(self):
-        """
-        This view should return a list of all the purchases for
-        the user as determined by the username portion of the URL.
-        """
         title = self.kwargs['title'].lower()
         print(title)
         return Album.objects.filter(title__contains=title)
+
+
+class PlaylistCreate(APIView):
+    # authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        serializer = PlaylistSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

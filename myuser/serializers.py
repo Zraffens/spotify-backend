@@ -2,6 +2,8 @@ from wsgiref import validate
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from .models import MyUser
+from album.serializers import PlaylistSerializer
+from album.models2 import Playlist
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -9,8 +11,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MyUser
-        fields = ('id', 'username', 'email', 'created', 'liked')
+        fields = ('id', 'username', 'email', 'created', 'liked', 'playlists')
 
+    def get_playlists(self, obj):
+        playlists = Playlist.objects.filter(created_by=obj)
+        serializer = PlaylistSerializer(playlists, many=True)
+        return serializer.data
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):

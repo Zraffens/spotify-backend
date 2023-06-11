@@ -10,7 +10,7 @@ class Playlist(models.Model):
     logo = models.ImageField(blank=True, upload_to='images/')
     artists = models.ManyToManyField(Artist)
     songs = models.ManyToManyField(Song)
-    created_by = models.OneToOneField(MyUser, on_delete=models.CASCADE, null=True)
+    created_by = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.title

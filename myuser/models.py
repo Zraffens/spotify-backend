@@ -46,7 +46,3 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return self.username
-    
-    @property
-    def get_playlists(self):
-        return self.playlists if self.playlists.exists() else None

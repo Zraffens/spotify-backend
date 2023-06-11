@@ -49,6 +49,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
         return list1
 
     def get_songsinfo(self, instance):
+        
         songs = instance.songs.all()
         MEDIA_DIR = 'http://localhost:8000/media/'
         songs_list = []
