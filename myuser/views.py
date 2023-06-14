@@ -27,7 +27,7 @@ class UserListView(generics.ListAPIView, UpdateModelMixin):
 
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView, UserEditPermission):
-     
+    permission_classes = [IsAuthenticated]
     queryset = MyUser.objects.all()
     serializer_class = UserSerializer
 
