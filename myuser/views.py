@@ -21,6 +21,7 @@ class UserEditPermission(BasePermission):
         return user == request.user
 
 class UserListView(generics.ListAPIView, UpdateModelMixin):
+    permission_classes = [AllowAny]
     queryset = MyUser.objects.all()
     serializer_class = UserSerializer
 
