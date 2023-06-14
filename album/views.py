@@ -7,7 +7,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import SessionAuthentication
 from song.serializers import SongSerializer
 
@@ -35,25 +35,34 @@ class AlbumDetail(mixins.RetrieveModelMixin,
 
 
 class PlaylistList(generics.ListCreateAPIView):
+    serializer_class = PlaylistSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        public_playlists = Playlist.objects.filter(public=True)
+        user_playlists = Playlist.objects.none()
+        if user.is_authenticated:
+            user_playlists = Playlist.objects.filter(created_by=user)
+
+        queryset = public_playlists.union(user_playlists)
+        return queryset
+
+
+class PlaylistDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Playlist.objects.all()
     serializer_class = PlaylistSerializer
 
+    # def get(self, request, *args, **kwargs):
+    #     return self.retrieve(request, *args, **kwargs)
 
-class PlaylistDetail(mixins.RetrieveModelMixin,
-                     mixins.UpdateModelMixin,
-                     mixins.DestroyModelMixin,
-                     generics.GenericAPIView):
-    queryset = Playlist.objects.all()
-    serializer_class = PlaylistSerializer
+    # def put(self, request, *args, **kwargs):
+    #     return self.update(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+    # def delete(self, request, *args, **kwargs):
+    #     return self.destroy(request, *args, **kwargs)
 
 
 # def AlbumSongList(response, id, *args, **kwargs):
@@ -82,7 +91,9 @@ class PlaylistCreate(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
-        serializer = PlaylistSerializer(data=request.data)
+        data = request.data.copy()
+        data['created_by'] = request.user.id
+        serializer = PlaylistSerializer(data=data)
 
         if serializer.is_valid():
             serializer.save()

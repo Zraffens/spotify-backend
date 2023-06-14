@@ -11,6 +11,7 @@ class Playlist(models.Model):
     artists = models.ManyToManyField(Artist)
     songs = models.ManyToManyField(Song)
     created_by = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
+    public = models.BooleanField(default=True, null=True)
 
     def __str__(self):
         return self.title
