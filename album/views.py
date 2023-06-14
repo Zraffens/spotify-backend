@@ -50,6 +50,15 @@ class PlaylistList(generics.ListCreateAPIView):
         return queryset
 
 
+class UserPlaylists(generics.ListCreateAPIView):
+    serializer_class = PlaylistSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Playlist.objects.filter(created_by=self.request.user)
+        return queryset
+
+
 class PlaylistDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Playlist.objects.all()

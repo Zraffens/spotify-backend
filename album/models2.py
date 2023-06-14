@@ -8,8 +8,8 @@ class Playlist(models.Model):
 
     title = models.CharField(max_length=200)
     logo = models.ImageField(blank=True, upload_to='images/')
-    artists = models.ManyToManyField(Artist)
-    songs = models.ManyToManyField(Song)
+    artists = models.ManyToManyField(Artist, blank=True)
+    songs = models.ManyToManyField(Song, blank=True)
     created_by = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
     public = models.BooleanField(default=True, null=True)
 
