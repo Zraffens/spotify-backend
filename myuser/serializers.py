@@ -13,7 +13,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MyUser
-        fields = ('id', 'username', 'email', 'created', 'liked', 'playlists', 'likedDetails')
+        fields = ('id', 'username', 'email', 'created',
+                  'liked', 'playlists', 'likedDetails')
 
     def get_playlists(self, obj):
         playlists = Playlist.objects.filter(created_by=obj)
@@ -24,6 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
         liked = obj.liked.all()
         song_serializer = SongSerializer(liked, many=True)
         return song_serializer.data
+
 
 class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,7 +45,13 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    likedDetails = serializers.SerializerMethodField()
+
     class Meta:
         model = MyUser
-        fields = ('id', 'username', 'email', 'created', 'liked')
+        fields = ('id', 'username', 'email', 'created', 'liked', 'likedDetails')
 
+    def get_likedDetails(self, obj):
+        liked = obj.liked.all()
+        song_serializer = SongSerializer(liked, many=True)
+        return song_serializer.data

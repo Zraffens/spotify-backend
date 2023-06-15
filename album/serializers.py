@@ -58,7 +58,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
                 artist = song.artist
                 artistdetails = {"id": artist.id, "title": artist.title}
                 det =  {"id": artistdetails["id"], "title": artistdetails["title"]}
-                songs_list.append({"title": song.title, "id": song.id, "liked": song.liked, "artistdetails": det, "file": MEDIA_DIR + str(song.file), "logo": MEDIA_DIR + str(song.album.logo),
+                songs_list.append({"title": song.title, "id": song.id, "artistdetails": det, "file": MEDIA_DIR + str(song.file), "logo": MEDIA_DIR + str(song.album.logo),
                                   "length": song.length, "album": {"id": song.album.id, "title": song.album.title}})
         return songs_list
     

@@ -8,7 +8,6 @@ class Song(models.Model):
     title = models.CharField(max_length=200)
     file = models.FileField(upload_to='musics/', null=True)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, null=True)
-    liked = models.BooleanField(default=False)
     length = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):

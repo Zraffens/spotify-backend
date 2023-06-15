@@ -9,7 +9,7 @@ class UserAdminConfig(UserAdmin):
     list_display = ('email', 'is_active', 'is_staff',)
     fieldsets = (
         ('Userinfo', {'fields': ('username', 'email', 'is_active')}),
-        ('Other Info', {'fields': ('favorites',)})
+        ('Other Info', {'fields': ('liked',)})
     )
 
 admin.site.register(MyUser, UserAdminConfig)

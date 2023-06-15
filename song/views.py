@@ -46,7 +46,3 @@ class SongSearchList(generics.ListAPIView):
         print(title)
         return Song.objects.filter(title__contains=title)
 
-
-class LikedList(generics.ListCreateAPIView):
-    queryset = Song.objects.filter(liked=True)
-    serializer_class = SongSerializer
