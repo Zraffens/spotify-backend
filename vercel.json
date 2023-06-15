@@ -1,14 +1,14 @@
 {
     "builds": [
       {
-        "src": "typrrr/wsgi.py",
+        "src": "spotify/wsgi.py",
         "use": "@vercel/python"
       }
     ],
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "typrrr/wsgi.py"
+        "dest": "spotify/wsgi.py"
       }
     ]
 }
