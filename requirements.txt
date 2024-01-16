@@ -1,26 +1,22 @@
-Package                       Version
------------------------------ --------
-asgiref                       3.7.2
-certifi                       2023.5.7
-charset-normalizer            3.1.0
-Django                        4.2.2
-django-cors-headers           4.0.0
-django-filter                 23.2
-djangorestframework           3.14.0
-djangorestframework-jwt       1.11.0
-djangorestframework-simplejwt 5.2.2
-idna                          3.4
-Markdown                      3.4.3
-mutagen                       1.46.0
-Pillow                        9.5.0
-pip                           23.1.2
-psycopg2                      2.9.6
-PyJWT                         1.7.1
-python-dotenv                 1.0.0
-pytz                          2023.3
-requests                      2.31.0
-setuptools                    65.5.0
-sqlparse                      0.4.4
-tzdata                        2023.3
-urllib3                       2.0.3
-whitenoise                    6.6.0
+asgiref==3.7.2
+certifi==2023.5.7
+charset-normalizer==3.1.0
+Django==4.2.2
+django-cors-headers==4.0.0
+django-filter==23.2
+djangorestframework==3.14.0
+djangorestframework-jwt==1.11.0
+djangorestframework-simplejwt==5.2.2
+idna==3.4
+Markdown==3.4.3
+mutagen==1.46.0
+Pillow==9.5.0
+psycopg2==2.9.6
+PyJWT==1.7.1
+python-dotenv==1.0.0
+pytz==2023.3
+requests==2.31.0
+sqlparse==0.4.4
+tzdata==2023.3
+urllib3==2.0.3
+whitenoise==6.6.0
